@@ -1,0 +1,142 @@
+{{template "header.html" .}}
+{{$selectedTexture := .material.Texture}}
+
+<div class="row">
+	<div class="col-md-11 col-md-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="/admin/materials">Material</a></li>
+			{{if .material.Id.Hex }}
+			<li class="active">Edit</li>
+			{{else}}
+			<li class="active">New</li>
+			{{end}}
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-5 col-md-offset-1">
+		<canvas id="previewCanvas"></canvas>
+	</div>
+
+	<div class="col-md-4">
+		<form class="form-horizontal" role="form" action="" method="POST">
+
+			<div class="form-group">
+				<label for="name" class="col-md-3 control-label">Name</label>
+				<div class="col-md-7">
+					<input type="text" class="form-control" id="name" name="name" value="{{ .material.Name }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="red" class="col-md-3 control-label">Red</label>
+				<div class="col-md-7">
+					<input type="text" class="js-range" id="red" name="red" value="{{ .material.Color.Red }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="blue" class="col-md-3 control-label">Blue</label>
+				<div class="col-md-7">
+					<input type="text" class="form-control" id="blue" name="blue" value="{{ .material.Color.Blue }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="green" class="col-md-3 control-label">Green</label>
+				<div class="col-md-7">
+					<input type="text" class="form-control" id="green" name="green" value="{{ .material.Color.Green }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="alpha" class="col-md-3 control-label">Alpha</label>
+				<div class="col-md-7">
+					<input type="text" class="form-control" id="alpha" name="alpha" value="{{ .material.Alpha }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="texture" class="col-md-3 control-label">Texture</label>
+				<div class="col-md-7">
+					<select class="form-control" id="texture" name="texture">
+						<option value="">None</option>
+						{{range $index, $element := .resources }}
+						<option value="{{$element}}" {{if $selectedTexture}}{{if eq $selectedTexture $element}}selected{{end}}{{end}}>{{$element}}</option>
+						{{end}}
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-offset-3 col-md-8">
+					<input type="hidden" id="hex" name="hex" value="{{ .material.Id.Hex }}">
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+</div>
+
+	<script>
+		$(function() {
+
+			LABYRINTH.ELEMENT.slider("#red",{{.material.Color.Red}});
+			LABYRINTH.ELEMENT.slider("#blue",{{.material.Color.Blue}});
+			LABYRINTH.ELEMENT.slider("#green",{{.material.Color.Green}});
+			LABYRINTH.ELEMENT.slider("#alpha",{{.material.Alpha}});
+
+			var canvas = document.getElementById("previewCanvas");
+			var engine = new BABYLON.Engine(canvas, true);
+			var scene;
+			var sphere;
+			var materialSphere;
+
+			var createScene = function () {
+				scene = new BABYLON.Scene(engine);
+				var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -1), scene);
+				camera.setTarget(new BABYLON.Vector3.Zero());
+				camera.attachControl(canvas, false);
+				var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+				light.intensity = .5;
+				sphere = BABYLON.Mesh.CreateSphere("sphere1", 20, 3, scene);
+				
+				materialSphere = new BABYLON.StandardMaterial("texture1", scene);
+				materialSphere.diffuseColor = new BABYLON.Color3({{ .material.Color.Red }},{{ .material.Color.Green }}, {{ .material.Color.Blue }});
+				materialSphere.alpha = {{ .material.Alpha }};
+
+				{{if .material.Texture}}
+				materialSphere.diffuseTexture = new BABYLON.Texture("/public/asset/material/{{.material.Texture}}", scene);
+				{{end}}
+
+				sphere.material = materialSphere;
+				return scene;
+			};
+			
+			scene = createScene();
+			engine.runRenderLoop(function () {
+				scene.render();
+			});
+
+			window.addEventListener("resize", function () {
+				engine.resize();
+			});
+
+			function preview(){
+				materialSphere.diffuseColor = new BABYLON.Color3($("#red").val(),$("#green").val(), $("#blue").val());
+				materialSphere.alpha = $("#alpha").val();
+				sphere.material = materialSphere;
+			}
+
+			$("#red").on("change", function(){preview();});
+			$("#green").on("change", function(){preview();});
+			$("#blue").on("change", function(){preview();});
+			$("#alpha").on("change", function(){preview();});
+
+		});
+   </script>
+
+{{template "footer.html" .}}

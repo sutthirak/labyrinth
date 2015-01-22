@@ -1,0 +1,53 @@
+{{template "header.html" .}}
+
+<div class="text-right">
+	<a class="btn btn-default" href="/admin/sprite" role="button">Create Sprite</a>
+	<br /><br />
+</div>
+
+<table class="table table-striped">
+
+	<tr>
+		<td>Name</td>
+		<td>Asset</td>
+		<td>Delete</td>
+	</tr>
+
+	{{range $index, $element := .sprites }}
+
+	<tr>
+		<td><a href="/admin/sprites/{{$element.Id.Hex}}">{{$element.Name}}</a></td>
+		<td>{{$element.AssetName}}</td>
+		<td>
+			<a class="btn btn-default delete" data-obj="{{$element.Id.Hex}}" role="button">Delete</a>
+		</td>
+	</tr>	
+
+	{{end}}
+
+</table>
+
+<script>
+	$(function() {
+	    $("table tr td .delete").on("click", function(file){
+	    	var linkObject = $(this)
+	    	var obj = $(this).data("obj")
+	    	if(confirm("Do you want to delete ?")) {
+				$.ajax({
+				    url: "/admin/sprites/"+obj,
+				    type: "DELETE",
+				    success: function(result) {
+				        if(result == "success"){
+				        	linkObject.parent().parent().remove()
+				        	LABYRINTH.MESSAGE.success()	
+				        }else{
+				        	console.log(result)
+				        }
+				    }
+				});
+			}
+		});
+	});
+</script>
+
+{{template "footer.html" .}}

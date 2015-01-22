@@ -1,0 +1,64 @@
+{{template "header.html" .}}
+
+<ol class="breadcrumb">
+  <li><a href="/admin/scenes">Scene</a></li>
+  <li><a href="/admin/scenes/{{.scene.Id.Hex}}">{{.scene.Name}}</a></li>
+  <li><a href="/admin/scenes/{{.scene.Id.Hex}}">{{.textRefName}}</a></li>
+  <li class="active">Action</li>
+</ol>
+
+<div class="row">
+  <div class="col-md-9">
+  	<form action="" method="POST">
+	  <div class="form-group">
+      <div id="editor">{{.action}}</div>
+	  </div>
+	  <a id="btnSave" class="btn btn-primary" data-scene="{{.scene.Id.Hex}}" data-text="{{.textRefName}}" role="button">Save</a>
+	</form>
+  </div>
+  <div class="col-md-3">
+    
+    <ul class="list-group">
+      <li class="list-group-item active">Command</li>
+      <li class="list-group-item">redirect(sceneRef)</li>
+    </ul>
+
+    {{if gt (len .scenes) 0}}
+    <ul class="list-group">
+      <li class="list-group-item active">Scene</li>
+      {{range $index, $element := .scenes }}
+      <li class="list-group-item">{{$element.Name}} ({{$element.RefName}})</li>
+      {{end}}
+    </ul>
+    {{end}}
+
+    {{if gt (len .scene.Objects) 0}}
+    <ul class="list-group">
+      <li class="list-group-item active">Object</li>
+      {{range $index, $element := .scene.Objects }}
+      <li class="list-group-item">{{$element.Name}} ({{$element.RefName}})</li>
+      {{end}}
+    </ul>
+    {{end}}
+
+  </div>
+</div>
+
+  <script src="/public/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/monokai");
+      editor.getSession().setMode("ace/mode/javascript");
+
+      $("#btnSave").on("click", function(){
+        var scene = $(this).data("scene");
+        var textRef = $(this).data("text");
+        var action = editor.getValue();
+        LABYRINTH.ACTION.send("/admin/scenes/"+scene+"/texts/"+textRef+"/action",action);
+      });
+
+ </script>
+
+</body>
+{{template "footer.html" .}}

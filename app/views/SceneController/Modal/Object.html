@@ -1,0 +1,38 @@
+{{$sceneRef := .scene.Id.Hex}}
+
+<div class="modal fade" id="objectModal" tabindex="-1" role="dialog" aria-labelledby="objectModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="objectModal">Object</h4>
+      </div>
+
+      <div class="modal-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th width="60%">Name</th>
+              <th>Type</th>
+              <th width="10%"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{range $index, $element := .objects }}
+              <tr>
+                <td>{{$element.Name}}</td>
+                <td>{{$element.Kind}}</td>
+                <td>
+                  <form role="form" action="/admin/scenes/{{$sceneRef}}/objects/object/{{$element.Id.Hex}}" method="POST"> 
+                    <button type="submit" class="btn btn-default">Add</button>
+                  </form>
+                </td>
+              </tr> 
+            {{end}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

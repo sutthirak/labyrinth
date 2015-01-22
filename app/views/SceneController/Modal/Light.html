@@ -1,0 +1,154 @@
+{{$sceneRef := .scene.Id.Hex}}
+
+<div class="modal fade" id="lightModal" tabindex="-1" role="dialog" aria-labelledby="lightModal" aria-hidden="true">
+  	<div class="modal-dialog">
+	    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="objectModal">Light</h4>
+			</div>
+
+			<div class="modal-body">
+		        <form class="form-horizontal" action="/admin/scenes/{{$sceneRef}}/objects/light" method="POST">
+					<div class="form-group">
+						<label for="name" class="col-md-2 control-label">Name</label>
+						<div class="col-sm-10">
+				  			<input type="text" class="form-control" id="lightName" name="name">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="cameraKind" class="col-md-2 control-label">Kind</label>
+						<div class="col-md-10">
+							<select class="form-control" name="kind" id="lightKind">
+							    <option value="">Select Light</option>
+							    <option value="POINT_LIGHT">Point Light</option>
+							    <option value="SPOT_LIGHT">Spot Light</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label">Position</label>
+						<div class="col-sm-10">
+							<div class="row">
+								<div class="col-sm-1"><p class="form-control-static">X</p></div>
+								<div class="col-sm-2">
+				  					<input type="text" class="form-control" name="positionX" id="lightPositionX">
+				  				</div>
+				  				<div class="col-sm-1"><p class="form-control-static">Y</p></div>
+				  				<div class="col-sm-2">
+				  					<input type="text" class="form-control" name="positionY" id="lightPositionY">
+				  				</div>
+				  				<div class="col-sm-1"><p class="form-control-static">Z</p></div>
+				  				<div class="col-sm-2">
+			  						<input type="text" class="form-control" name="positionZ" id="lightPositionZ">
+			  					</div>
+				  			</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label">Direction</label>
+						<div class="col-sm-10">
+							<div class="row">
+								<div class="col-sm-1"><p class="form-control-static">X</p></div>
+								<div class="col-sm-2">
+				  					<input type="text" class="form-control" name="directionX" id="lightDirectionX">
+				  				</div>
+				  				<div class="col-sm-1"><p class="form-control-static">Y</p></div>
+				  				<div class="col-sm-2">
+				  					<input type="text" class="form-control" name="directionY" id="lightDirectionY">
+				  				</div>
+				  				<div class="col-sm-1"><p class="form-control-static">Z</p></div>
+				  				<div class="col-sm-2">
+			  						<input type="text" class="form-control" name="directionZ" id="lightDirectionZ">
+			  					</div>
+				  			</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="name" class="col-md-2 control-label">Diffuse</label>
+						<div class="col-sm-10">
+				  			<input type="text" class="form-control color {onImmediateChange:'getDiffuseRGB(this);'}" id="lightDiffuse" name="diffuse">
+				  			<input type="hidden" id="lightDiffuseRed" name="diffuseRed" value="1">
+				  			<input type="hidden" id="lightDiffuseGreen" name="diffuseGreen" value="1">
+				  			<input type="hidden" id="lightDiffuseBlue" name="diffuseBlue" value="1">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="name" class="col-md-2 control-label">Specular</label>
+						<div class="col-sm-10">
+				  			<input type="text" class="form-control color {onImmediateChange:'getSpecularRGB(this);'}" id="lightSpecular" name="specular">
+				  			<input type="hidden" id="lightSpecularRed" name="specularRed" value="1">
+				  			<input type="hidden" id="lightSpecularGreen" name="specularGreen" value="1">
+				  			<input type="hidden" id="lightSpecularBlue" name="specularBlue" value="1">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="name" class="col-md-2 control-label">Angle</label>
+						<div class="col-sm-10">
+				  			<input type="text" class="form-control" id="lightAngle" name="angle">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="name" class="col-md-2 control-label">Exponent</label>
+						<div class="col-sm-10">
+				  			<input type="text" class="form-control" id="lightExponent" name="exponent">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="name" class="col-md-2 control-label">Intensity</label>
+						<div class="col-sm-10">
+				  			<input type="text" class="form-control" id="lightIntensity" name="intensity">
+						</div>
+					</div>
+
+					<div class="form-group">
+			            <div class="col-md-offset-2 col-md-10">
+			            	<button type="submit" class="btn btn-primary">Add</button>
+			            </div>
+			        </div>
+					
+				</form>
+			</div>
+	    </div>
+	</div>
+</div>
+
+<script>
+
+	$(function() {
+		$("#lightAngle").parent().parent().hide();
+		$("#lightExponent").parent().parent().hide();
+	});
+
+	$("#lightKind").on("change", function(){
+		if($("#lightKind").val() === "POINT_LIGHT"){
+			$("#lightAngle").parent().parent().hide();
+			$("#lightExponent").parent().parent().hide(); 
+		}
+		if($("#lightKind").val() === "SPOT_LIGHT"){
+ 			$("#lightAngle").parent().parent().show();
+			$("#lightExponent").parent().parent().show(); 
+		}
+	});
+	
+	function getDiffuseRGB(color){
+		$("#lightDiffuseRed").val(color.rgb[0]);
+		$("#lightDiffuseGreen").val(color.rgb[1]);
+		$("#lightDiffuseBlue").val(color.rgb[2]);
+	}
+
+	function getSpecularRGB(color){
+		$("#lightSpecularRed").val(color.rgb[0]);
+		$("#lightSpecularGreen").val(color.rgb[1]);
+		$("#lightSpecularBlue").val(color.rgb[2]);
+	}	
+
+</script>

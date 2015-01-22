@@ -1,0 +1,7 @@
+test-results/
+tmp/
+routes/
+.idea/
+.project
+labyrinth.iml
+*.DS_Store

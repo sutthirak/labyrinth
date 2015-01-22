@@ -1,0 +1,52 @@
+{{template "header.html" .}}
+
+<div class="row">
+	<div class="col-md-12">
+		<form class="form-horizontal" role="form" action="/admin/sprite" method="POST">
+
+			<div class="form-group">
+				<label for="objectName" class="col-md-2 control-label">Name</label>
+				<div class="col-md-5">
+					<input type="text" class="form-control" id="name" name="name" value="{{.sprite.Name}}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="objectName" class="col-md-2 control-label">Asset</label>
+				<div class="col-md-5">
+					<select class="form-control" id="asset" name="asset">
+						{{range $index, $element := .resources }}
+						<option value="{{$element}}">
+							{{$element}}
+						</option>
+						{{end}}
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="objectName" class="col-md-2 control-label">Number of Instance</label>
+				<div class="col-md-5">
+					<input type="text" class="form-control" id="instance" name="instance" value="{{.sprite.Properties.instance}}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="objectName" class="col-md-2 control-label">Size</label>
+				<div class="col-md-5">
+					<input type="text" class="form-control" id="size" name="size" value="{{.sprite.Properties.size}}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<input type="hidden" id="hex" name="hex" value="{{.sprite.Id.Hex}}">
+					<button type="submit" class="btn btn-default">Save</button>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+
+{{template "footer.html" .}}

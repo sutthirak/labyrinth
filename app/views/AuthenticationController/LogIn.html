@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Labyrinth</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/png" href="/public/img/favicon.png">
+    <script src="/public/js/jquery-2.1.1.min.js"></script>
+    <script src="/public/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+          
+          <div class="text-center">
+             <img src="/public/img/labyrinth.png" alt="Labyrinth" />
+          </div>
+
+          {{if .flash.success}}
+          <div class="alert alert-success">
+             {{.flash.success}}
+          </div>
+          {{end}}
+
+          {{if .errors}}
+          <div class="alert alert-danger">
+            <ul>
+            {{range .errors}}
+              <li> {{.Message}}</li>
+            {{end}}
+            </ul>
+          </div>
+          {{end}}
+
+          <form action="" method="POST">
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" class="form-control" id="email" name="email" value="{{.flash.email}}">
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password">
+            </div>
+
+            <button type="submit" class="btn btn-default">Log In</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+
+
+

@@ -1,0 +1,131 @@
+{{$scene := .scene.Id.Hex}}
+{{template "header.html" .}}
+
+<style>
+	#renderCanvas{width:100%;height:400px;}
+</style>
+
+<div>
+  <ol class="breadcrumb">
+    <li><a href="/admin/scenes">Scene</a></li>
+    <li><a href="/admin/scenes/{{.scene.Id.Hex}}">{{.scene.Name}}</a></li>
+    <li class="active">Animation</li>
+  </ol>
+</div>
+
+<div class="row">
+
+  <div class="col-md-12">
+  	<div class="text-right menubar">
+  		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#animationModal">Add</button>
+    </div>
+
+    <div>
+    	<table class="table table-striped">
+            <thead>
+        			<tr>
+        				<th>Name</td>
+                        <th>Target</td>
+                        <th width="10%"></th>
+                        <th width="10%"></th>
+        			</tr>
+            </thead>
+            {{range $index, $element := .scene.Animations }}
+            <tbody>
+    			<tr>
+    				<td>{{$element.Name}}</td>
+                    <td>{{$element.Target}}</td>
+    				<td>
+                        <a class="btn btn-sm btn-default" href="/admin/scenes/{{$scene}}/animations/{{$index}}/frames">Frame</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-danger btn-animation-delete" data-scene="{{$scene}}" data-index="{{$index}}" role="button">Delete</a>
+    				</td>
+    			</tr>
+            </tbody>
+            {{end}}
+		</table>
+	</div>
+
+</div>
+
+<!-- object modal -->
+<div class="modal fade" id="animationModal" tabindex="-1" role="dialog" aria-labelledby="animationModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="animationModal">Add Animation</h4>
+      </div>
+      <div class="modal-body">
+    	   <form class="form-horizontal" role="form" action="" method="POST">
+
+    			<div class="form-group">
+    				<label for="name" class="col-md-3 control-label">Name</label>
+    				<div class="col-md-7">
+    					<input type="text" class="form-control" id="name" name="name" value="">
+    				</div>
+    			</div>
+
+    			<div class="form-group">
+    				<label for="target" class="col-md-3 control-label">Target Object</label>
+    				<div class="col-md-7">
+    					<select class="form-control" id="target" name="target">
+    						{{range $index, $element := .scene.Objects }}
+    						<option value="{{ $element.RefName }}">{{ $element.Name }}</option>
+    						{{ end }}
+    					</select>
+    				</div>
+    			</div>
+
+    			<div class="form-group">
+    				<label for="kind" class="col-md-3 control-label">Kind</label>
+    				<div class="col-md-7">
+    					<select class="form-control" id="kind" name="kind">
+    						<option value="scaling.x">Scale X</option>
+    						<option value="scaling.y">Scale Y</option>
+    						<option value="scaling.z">Scale Z</option>
+                <option value="position.x">Move X</option>
+                <option value="position.y">Move Y</option>
+                <option value="position.z">Move Z</option>
+                <option value="rotation.x">Rotate X</option>
+                <option value="rotation.y">Rotate Y</option>
+                <option value="rotation.z">Rotate Z</option>
+    					</select>
+    				</div>
+    			</div>
+
+    			<div class="form-group">
+    				<label for="animationtype" class="col-md-3 control-label">Type</label>
+    				<div class="col-md-7">
+    					<select class="form-control" id="animationtype" name="animationtype">
+    						<option value="BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT">Stop</option>
+    						<option value="BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE">Loop</option>
+    						<option value="BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE">Increment</option>
+    					</select>
+    				</div>
+    			</div>
+
+    			<div class="form-group">
+    				<div class="col-md-offset-3 col-md-7">
+    					<input type="hidden" id="sceneHex" name="sceneHex" value="{{.scene.Id.Hex}}">
+    					<button type="submit" class="btn btn-primary">Save</button>
+    				</div>
+    			</div>
+
+    		</form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $("table tr td .btn-animation-delete").on("click", function(){
+    var scene = $(this).data("scene"); 
+    var element = $(this).data("index");
+    LABYRINTH.ACTION.delete("/admin/scenes/"+scene+"/animations/"+element);
+  }); 
+</script>
+
+{{template "footer.html" .}}

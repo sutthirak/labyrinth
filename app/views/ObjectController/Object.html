@@ -1,0 +1,124 @@
+{{template "header.html" .}}
+
+<div class="row">
+	<div class="col-md-11 col-md-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="/admin/objects">Object</a></li>
+			{{if .object.Id.Hex }}
+			<li class="active">Edit</li>
+			{{else}}
+			<li class="active">New</li>
+			{{end}}
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-5 col-md-offset-1">
+		<canvas id="previewCanvas"></canvas>
+	</div>
+
+	<div class="col-md-4">
+		<form class="form-horizontal" role="form" action="" method="POST">
+			
+			<div class="form-group">
+				<label for="kind" class="col-md-4 control-label">Kind</label>
+				<div class="col-md-7">
+
+					{{if .object.Kind }}
+						<p class="form-control-static">{{.object.Kind}}</p>
+						<input type="hidden" id="kind" name="kind" value="{{.object.Kind}}" />
+					{{else}}
+						<select class="form-control" id="kind" name="kind">
+							<option value="Box">Box</option>
+							<option value="Sphere">Sphere</option>
+							<option value="Plane">Plane</option>
+							<option value="Babylon">Babylon</option>
+						</select>
+					{{end}}
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="size" class="col-md-4 control-label">Name</label>
+				<div class="col-md-7">
+					<input type="text" class="form-control" id="name" name="name" value="{{ .object.Name }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="size" class="col-md-4 control-label">Size</label>
+				<div class="col-md-7">
+					<input type="text" class="form-control" id="size" name="size" value="{{ .object.Properties.size }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="segment" class="col-md-4 control-label">Segment</label>
+				<div class="col-md-7">
+					<input type="text" class="form-control" id="segment" name="segment" value="{{ .object.Properties.segment }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="diameter" class="col-md-4 control-label">Daimeter</label>
+				<div class="col-md-7">
+					<input type="text" class="form-control" id="diameter" name="diameter" value="{{ .object.Properties.diameter }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="mesh" class="col-md-4 control-label">Mesh Name</label>
+				<div class="col-md-7">
+					<input type="text" class="form-control" id="mesh" name="mesh" value="{{ .object.Properties.mesh }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="file" class="col-md-4 control-label">Babylon file</label>
+				<div class="col-md-7">
+					<select class="form-control" id="file" name="file">
+						{{range $index, $element := .babylons }}
+						<option value="{{$element}}">{{$element}}</option>
+						{{end}}
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="materialHex" class="col-sm-4 control-label">Material</label>
+				<div class="col-sm-7">
+					<select class="form-control" id="materialHex" name="materialHex">
+						{{range $index, $element := .materials }}
+						<option value="{{$element.Id.Hex}}">{{$element.Name}}</option>
+						{{end}}
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-7">
+					<input type="hidden" id="hex" name="hex" value="{{ .object.Id.Hex }}">
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+</div>
+
+<script>
+	var fields = {};
+	fields["Box"] = ["#size"];
+	fields["Sphere"] = ["#segment","#diameter"];
+	fields["Plane"] = ["#size"];
+	fields["Babylon"] = ["#mesh","#file"];
+
+	LABYRINTH.ELEMENT.enableField("#kind",fields);
+</script>
+
+{{raw .preview}}
+
+{{template "footer.html" .}}

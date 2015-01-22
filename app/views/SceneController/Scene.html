@@ -1,0 +1,130 @@
+{{$mainCamera := .scene.MainCamera}}
+{{set . "scene" .scene}}
+{{set . "objects" .objects}}
+
+{{template "header.html" .}}
+
+<div class="row">
+  <div class="col-md-4">
+    <ol class="breadcrumb">
+      <li><a href="/admin/scenes">Scene</a></li>
+      <li class="active">{{.scene.Name}}</li>
+    </ol>
+  </div>
+  <div class="col-md-8 text-right">
+
+    <form class="form-inline">
+      <select class="form-control" id="mainCamera">
+        {{range $index, $element := .scene.Cameras }}
+          <option value="{{$element.RefName}}" {{if eq $mainCamera $element.RefName}}selected{{end}}>   {{$element.Name}}
+          </option>
+        {{end}}
+      </select>
+      <a id="btn-camera-set" class="btn btn-default" data-scene="{{.scene.Id.Hex}}" role="button">Set</a>
+
+      <a href="/admin/scenes/{{.scene.Id.Hex}}/animations" class="btn btn-default">Animation</a>
+      <a href="/admin/scenes/{{.scene.Id.Hex}}/script" class="btn btn-default">Script Editor</a>
+      <a href="/admin/scenes/{{.scene.Id.Hex}}/preview" class="btn btn-default" target="blank">Preview</a>
+    
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12" role="tabpanel">
+
+    <!-- tab menu -->
+    <ul class="nav nav-tabs" role="tablist" id="mainTab">
+      <li role="presentation">
+        <a href="#objectPanel" aria-controls="object" role="tab" data-toggle="tab">Object</a>
+      </li>
+
+      <li role="presentation">
+        <a href="#cameraPanel" aria-controls="camera" role="tab" data-toggle="tab">Camera</a>
+      </li>
+
+      <li role="presentation">
+        <a href="#lightPanel" aria-controls="light" role="tab" data-toggle="tab">Light</a>
+      </li>
+
+      <li role="presentation">
+        <a href="#imagePanel" aria-controls="image" role="tab" data-toggle="tab">Image</a>
+      </li>
+      
+      <li role="presentation">
+        <a href="#textPanel" aria-controls="text" role="tab" data-toggle="tab">Text</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- object panel -->
+      {{template "SceneController/Tab/Object.html" .}}  
+
+      <!-- camera panel -->
+      {{template "SceneController/Tab/Camera.html" .}}
+
+      <!-- image panel -->
+      {{template "SceneController/Tab/Image.html" .}}
+    
+      <!-- text panel -->
+      {{template "SceneController/Tab/Text.html" .}}    
+
+      <!-- light panel -->
+      {{template "SceneController/Tab/Light.html" .}}
+    </div>
+  
+  </div>
+</div>
+
+<!-- object modal -->
+{{template "SceneController/Modal/Object.html" .}}
+
+<!-- Camera modal -->
+{{template "SceneController/Modal/Camera.html" .}}
+
+<!-- Image modal -->
+{{template "SceneController/Modal/Image.html" .}}
+
+<!-- Text modal -->
+{{template "SceneController/Modal/Text.html" .}}
+
+<!-- Light modal -->
+{{template "SceneController/Modal/Light.html" .}}
+
+<script>
+
+$(".btn-object-delete").on("click", function(){
+  var scene = $(this).data("scene"); 
+  var element = $(this).data("index");
+  LABYRINTH.ACTION.delete("/admin/scenes/"+scene+"/elements/object/"+element);
+});
+
+$(".btn-camera-delete").on("click", function(){
+  var scene = $(this).data("scene"); 
+  var camera = $(this).data("camera");
+  LABYRINTH.ACTION.delete("/admin/scenes/"+scene+"/elements/camera/"+camera);
+});
+
+$(".btn-image-delete").on("click", function(){
+  var scene = $(this).data("scene"); 
+  var index = $(this).data("index");
+  LABYRINTH.ACTION.delete("/admin/scenes/"+scene+"/elements/image/"+index);
+});
+
+$(".btn-text-delete").on("click", function(){
+  var scene = $(this).data("scene"); 
+  var index = $(this).data("index");
+  LABYRINTH.ACTION.delete("/admin/scenes/"+scene+"/elements/text/"+index);
+});
+
+$("#btn-camera-set").on("click", function(){
+  var scene = $(this).data("scene");
+  var camera = $("#mainCamera").val(); 
+  LABYRINTH.ACTION.post("/admin/scenes/"+scene+"/objects/camera/"+camera+"/main");
+});
+
+LABYRINTH.ELEMENT.tab();
+
+</script>
+
+{{template "footer.html" .}}

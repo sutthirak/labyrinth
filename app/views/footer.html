@@ -1,0 +1,23 @@
+	    	</div>
+	    </div>
+	</div>
+
+	<script>
+		$(function() {
+			LABYRINTH.ELEMENT.navbar();
+			
+			if($(".alert-success").length){
+				$(".alert-success").slideDown("slow").delay(2000).slideUp("slow",function(){
+					$(".alert-success").children().remove();
+				});
+			}
+
+			{{if .flash.success}}
+              new PNotify({title: 'Success',text: '{{.flash.success}}',type: 'info'});
+          	{{end}}
+			
+		});
+	</script>
+
+</body>
+</html>

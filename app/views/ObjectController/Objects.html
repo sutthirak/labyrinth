@@ -1,0 +1,55 @@
+{{template "header.html" .}}
+
+<div class="row panel-top">
+  	<div class="col-md-12 text-right">
+		<a href="/admin/object" role="button" class="btn btn-primary">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			New Object
+		</a>
+	</div>
+</div>
+
+<ol class="breadcrumb">
+	<li class="active">Object</li>
+</ol>
+
+<div class="row" style="padding-left:10px;padding-right:10px;">
+  	<div class="col-md-12">
+		<table class="table table-striped table-main">
+			<thead>
+				<tr>
+					<th width="40%">Name</th>
+					<th>Kind</th>
+					<th width="10%"></th>
+					<th width="10%"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{{range $index, $element := .objects }}
+				<tr>
+					<td>{{$element.Name}}</td>
+					<td>{{$element.Kind}}</td>
+					<td>
+						<a class="btn btn-default btn-object-edit" role="button" href="/admin/objects/{{$element.Id.Hex}}">Edit</a>
+					</td>
+					<td>
+						<a class="btn btn-default btn-object-delete" data-obj="{{$element.Id.Hex}}" role="button">Delete</a>
+					</td>
+				</tr>	
+				{{end}}
+			</tbody>
+
+		</table>
+	</div>
+</div>
+
+<script>
+	$(function() {
+	    $("table tr td .btn-object-delete").on("click", function(){
+	    	var obj = $(this).data("obj");
+	    	LABYRINTH.ACTION.delete("/admin/objects/"+obj);
+		});
+	});
+</script>
+
+{{template "footer.html" .}}

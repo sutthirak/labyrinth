@@ -1,0 +1,96 @@
+module:testrunner
+
+GET     /                                       									App.Index
+
+GET     /login                                       								AuthenticationController.LogIn
+POST    /login                                       								AuthenticationController.Auth
+GET     /logout                                       								AuthenticationController.LogOut
+
+GET     /setup                                       								AuthenticationController.SetUp
+POST    /setup                                       								AuthenticationController.SetUpSave
+
+GET     /admin                                  									Admin.Index
+
+GET		/admin/resources															ResourceController.Resources
+POST	/admin/resource																ResourceController.Resource
+DELETE	/admin/resources/:kind/:fileName											ResourceController.ResourceDelete
+
+GET		/admin/materials															MaterialController.Materials
+GET		/admin/material																MaterialController.Material
+GET		/admin/materials/:hex														MaterialController.Material
+POST    /admin/material                          									MaterialController.MaterialSave
+POST    /admin/materials/:hex                    									MaterialController.MaterialSave
+DELETE  /admin/materials/:hex                    									MaterialController.MaterialDelete
+
+GET     /admin/scenes                           									SceneController.Scenes
+GET     /admin/scenes/:hex                      									SceneController.Scene
+GET     /admin/scenes/:scene/preview                      							SceneController.Preview
+POST    /admin/scene                            									SceneController.AddScene
+DELETE  /admin/scenes/:hex                      									SceneController.DeleteScene
+
+POST    /admin/scenes/:sceneHex/objects/object/:objectHex       					SceneController.AddObject
+POST    /admin/scenes/:sceneHex/objects/sprite/:spriteHex       					SceneController.AddSprite
+POST    /admin/scenes/:sceneHex/objects/camera       								SceneController.AddCamera
+POST    /admin/scenes/:sceneHex/objects/light       								SceneLightController.AddLight
+
+POST    /admin/scenes/:sceneHex/objects/camera/:cameraRefName/main       			SceneController.SetMainCamera
+
+POST    /admin/scenes/:sceneHex/elements/object/:elementNumber     					SceneController.UpdateObject
+DELETE  /admin/scenes/:sceneHex/elements/object/:elementNumber  					SceneController.DeleteObject
+
+POST    /admin/scenes/:sceneHex/elements/sprite/:elementNumber     					SceneController.UpdateSprite
+DELETE  /admin/scenes/:sceneHex/elements/sprite/:elementNumber  					SceneController.DeleteSprite
+
+POST  /admin/scenes/:sceneHex/elements/camera/:elementNumber 						SceneController.UpdateCamera
+DELETE  /admin/scenes/:sceneHex/elements/camera/:cameraRefName 						SceneController.DeleteCamera
+
+POST  /admin/scenes/:sceneHex/elements/light/:elementNumber 						SceneLightController.UpdateLight
+DELETE  /admin/scenes/:sceneHex/elements/light/:elementNumber 						SceneLightController.DeleteLight
+
+GET     /admin/scenes/:hex/script                      								SceneController.Script
+POST    /admin/scenes/:hex/script                      								SceneController.ScriptSave
+
+GET     /admin/scenes/:sceneHex/objects/:objectRefName/action                      	SceneController.Action
+POST    /admin/scenes/:sceneHex/objects/:objectRefName/action                      	SceneController.ActionSave
+
+GET    	/admin/scenes/:sceneHex/animations 											AnimationController.Animations
+POST    /admin/scenes/:sceneHex/animations 											AnimationController.AnimationsSave
+DELETE  /admin/scenes/:sceneHex/animations/:elementNumber  							AnimationController.AnimationsDelete
+GET    	/admin/scenes/:sceneHex/animations/:elementNumber/frames 					AnimationController.AnimationFrame
+POST    /admin/scenes/:sceneHex/animations/:elementNumber/frames 					AnimationController.AnimationFrameSave
+DELETE  /admin/scenes/:sceneHex/animations/:elementNumber/frames/:frameNumber 		AnimationController.AnimationsFrameDelete
+
+POST    /admin/scenes/:sceneHex/images 												ImageController.ImagesSave
+POST  	/admin/scenes/:sceneHex/elements/image/:elementNumber  						ImageController.ImagesUpdate
+DELETE  /admin/scenes/:sceneHex/elements/image/:elementNumber  						ImageController.ImagesDelete
+GET     /admin/scenes/:sceneHex/images/:imageRefName/action                      	ImageController.Action
+POST    /admin/scenes/:sceneHex/images/:imageRefName/action                      	ImageController.ActionSave
+
+POST    /admin/scenes/:sceneHex/texts 												TextController.TextSave
+POST  	/admin/scenes/:sceneHex/elements/text/:elementNumber  						TextController.TextUpdate
+DELETE  /admin/scenes/:sceneHex/elements/text/:elementNumber  						TextController.TextDelete
+GET     /admin/scenes/:sceneHex/texts/:textRefName/action                      		TextController.Action
+POST    /admin/scenes/:sceneHex/texts/:textRefName/action                      		TextController.ActionSave
+
+
+GET     /admin/objects                          									ObjectController.Objects
+GET     /admin/object                      											ObjectController.Object
+GET     /admin/objects/:hex                    										ObjectController.Object
+POST    /admin/object                          										ObjectController.ObjectSave
+POST    /admin/objects/:hex                    										ObjectController.ObjectSave
+DELETE  /admin/objects/:hex                    										ObjectController.ObjectDelete
+
+GET     /admin/sprites                          									SpriteController.Sprites
+GET     /admin/sprite                          										SpriteController.Sprite
+GET     /admin/sprites/:hex                          								SpriteController.Sprite
+POST    /admin/sprite                          										SpriteController.SpriteSave
+DELETE  /admin/sprites/:hex                    										SpriteController.SpriteDelete
+
+# Ignore favicon requests
+GET     /favicon.ico                            									404
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/*filepath                       									Static.Serve("public")
+
+# Catch all
+*       /:controller/:action                    									:controller.:action

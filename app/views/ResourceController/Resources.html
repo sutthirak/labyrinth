@@ -1,0 +1,177 @@
+{{template "header.html" .}}
+
+<div class="row panel-top">
+  	<div class="col-md-12 text-right">
+			<button data-toggle="modal" data-target="#resourceModal" type="button" class="btn btn-primary">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				New resource
+			</button>
+		</form>
+	</div>
+</div>
+
+<ol class="breadcrumb">
+	<li class="active">Resources</li>
+</ol>
+
+<div class="col-md-12" role="tabpanel">
+	<ul class="nav nav-tabs" role="tablist" id="mainTab">
+      <li role="presentation" class="active"><a href="#materialPanel" aria-controls="material" role="tab" data-toggle="tab">Material</a></li>
+      <li role="presentation"><a href="#babylonPanel" aria-controls="babylon" role="tab" data-toggle="tab">Babylon</a></li>
+      <li role="presentation"><a href="#imagePanel" aria-controls="image" role="tab" data-toggle="tab">Image</a></li>
+    </ul>
+
+    <div class="tab-content">
+
+    	<!-- material panel -->
+    	<div role="tabpanel" class="tab-pane fade in active" id="materialPanel">
+    		<div class="row">
+			  	<div class="col-md-12">
+					<table class="table table-striped table-main">
+						<thead>
+							<tr>
+								<th width="40%">Name</th>
+								<th>Size</th>
+								<th>Modified Time</th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{{range $index, $element := .materials }}
+							<tr>
+								<td>{{$element.Name}}</td>
+								<td>{{$element.Size}}</td>
+								<td>{{$element.ModTime}}</td>
+								<td>
+									<a class="btn btn-default btn-resources-delete" data-file="{{$element.Name}}" data-kind="Materail" role="button">Delete</a>
+								</td>
+							</tr>	
+							{{end}}
+						</tbody>
+
+					</table>
+				</div>
+			</div>
+    	</div>
+
+    	<!-- babylon panel -->
+    	<div role="tabpanel" class="tab-pane fade in" id="babylonPanel">
+    		<div class="row">
+			  	<div class="col-md-12">
+					<table class="table table-striped table-main">
+						<thead>
+							<tr>
+								<th width="40%">Name</th>
+								<th>Size</th>
+								<th>Modified Time</th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{{range $index, $element := .babylons }}
+							<tr>
+								<td>{{$element.Name}}</td>
+								<td>{{$element.Size}}</td>
+								<td>{{$element.ModTime}}</td>
+								<td>
+									<a class="btn btn-default btn-resources-delete" data-file="{{$element.Name}}" data-kind="Babylon" role="button">Delete</a>
+								</td>
+							</tr>	
+							{{end}}
+						</tbody>
+
+					</table>
+				</div>
+			</div>
+    	</div>
+
+    	<!-- image panel -->
+    	<div role="tabpanel" class="tab-pane fade in" id="imagePanel">
+    		<div class="row">
+			  	<div class="col-md-12">
+					<table class="table table-striped table-main">
+						<thead>
+							<tr>
+								<th width="40%">Name</th>
+								<th>Size</th>
+								<th>Modified Time</th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{{range $index, $element := .images }}
+							<tr>
+								<td>{{$element.Name}}</td>
+								<td>{{$element.Size}}</td>
+								<td>{{$element.ModTime}}</td>
+								<td>
+									<a class="btn btn-default btn-resources-delete" data-file="{{$element.Name}}" data-kind="Image" role="button">Delete</a>
+								</td>
+							</tr>	
+							{{end}}
+						</tbody>
+
+					</table>
+				</div>
+			</div>
+    	</div>
+
+    </div>
+</div>
+
+<!-- resource modal -->
+<div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="resourceModal" aria-hidden="true">
+  	<div class="modal-dialog">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal">
+	        	<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        	<h4 class="modal-title">Add new resource</h4>
+	      	</div>
+	      	<div class="modal-body">
+	        	<form class="form-horizontal" name="upload" role="form" action="/admin/resource" method="post" enctype="multipart/form-data">
+
+	        		<div class="form-group">
+	        			<label for="data" class="col-md-2 control-label">File</label>
+	        			<div class="col-md-10">
+	        				<input type="file" name="data"/>
+	        			</div>
+	        		</div>
+
+	        		<div class="form-group">
+	        			<label for="type" class="col-md-2 control-label">Kind</label>
+	        			<div class="col-md-5">
+	        				<select class="form-control" id="kind" name="kind">
+								<option value="Material">Material</option>
+								<option value="Babylon">Babylon</option>
+								<option value="Image">Image</option>
+							</select>
+	        			</div>
+	        		</div>
+
+	        		<div class="form-group">
+	              		<div class="col-md-offset-2 col-md-10">
+	                		<button type="submit" class="btn btn-primary">Upload</button>
+	              		</div>
+	              	</div>
+
+            	</form>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+
+<script>
+	$(function() {
+	    $("table tr td .btn-resources-delete").on("click", function(){
+	    	var kind = $(this).data("kind");
+	    	var fileName = $(this).data("file");
+	    	LABYRINTH.ACTION.delete("/admin/resources/"+kind+"/"+fileName);
+		});
+	});
+</script>
+
+{{template "footer.html" .}}

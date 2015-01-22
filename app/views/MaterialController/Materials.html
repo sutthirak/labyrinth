@@ -1,0 +1,53 @@
+{{template "header.html" .}}
+
+<div class="row panel-top">
+  	<div class="col-md-12 text-right">
+			<a href="/admin/material" class="btn btn-primary" role="button">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				New material
+			</a>
+		</form>
+	</div>
+</div>
+
+<ol class="breadcrumb">
+	<li class="active">Material</li>
+</ol>
+
+<div class="row" style="padding-left:10px;padding-right:10px;">
+  	<div class="col-md-12">
+		<table class="table table-striped table-main">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th width="10%"></th>
+					<th width="10%"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{{range $index, $element := .materials }}
+				<tr>
+					<td>{{$element.Name}}</td>
+					<td>
+						<a class="btn btn-default btn-material-edit" role="button" href="/admin/materials/{{$element.Id.Hex}}">Edit</a>
+					</td>
+					<td>
+						<a class="btn btn-default btn-material-delete" data-material="{{$element.Id.Hex}}" role="button">Delete</a>
+					</td>
+				</tr>	
+				{{end}}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script>
+	$(function() {
+	    $("table tr td .btn-material-delete").on("click", function(){
+	    	var material = $(this).data("material");
+	    	LABYRINTH.ACTION.delete("/admin/materials/"+material);
+		});
+	});
+</script>
+
+{{template "footer.html" .}}

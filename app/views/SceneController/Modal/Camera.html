@@ -1,0 +1,129 @@
+{{$sceneRef := .scene.Id.Hex}}
+
+<div class="modal fade" id="cameraModal" tabindex="-1" role="dialog" aria-labelledby="cameraModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="objectModal">Camera</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" action="/admin/scenes/{{$sceneRef}}/objects/camera" method="POST">
+          <div class="form-group">
+            <label for="name" class="col-md-2 control-label">Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="name" name="name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cameraKind" class="col-md-2 control-label">Kind</label>
+            <div class="col-md-10">
+              <select class="form-control" name="kind" id="cameraKind">
+                <option value="">Select Camera</option>
+                <option value="FREE_CAMERA">Free Camera</option>
+                <option value="ARC_CAMERA">ARC Rotate Camera</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- case free camera -->
+          <div class="form-group">
+            <label for="x" class="col-sm-2 control-label">Position X</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control col-sm-2" id="cameraPositionX" name="x">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="y" class="col-md-2 control-label">Position Y</label>
+            <div class="col-md-10">
+              <input type="text" class="form-control col-md-2" id="cameraPositionY" name="y">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="z" class="col-md-2 control-label">Position Z</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control col-md-2" id="cameraPositionZ" name="z">
+            </div>
+          </div>
+
+          <!-- case control camera -->
+          <div class="form-group">
+            <label for="alpha" class="col-md-2 control-label">Alpha</label>
+            <div class="col-md-10">
+              <input type="text" class="form-control col-md-2" id="cameraAlpha" name="alpha">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="beta" class="col-md-2 control-label">Beta</label>
+            <div class="col-md-10">
+              <input type="text" class="form-control col-md-2" id="cameraBeta" name="beta">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="redius" class="col-md-2 control-label">Redius</label>
+            <div class="col-md-10">
+              <input type="text" class="form-control col-md-2" id="cameraRedius" name="redius">
+            </div>
+          </div>
+
+          <!-- for control camera & target camera -->
+          <div class="form-group">
+            <label for="target" class="col-md-2 control-label">Target</label>
+            <div class="col-md-10">
+              <select class="form-control" name="target" id="cameraTarget">
+                <option value="">Default</option>
+                {{ range $index , $object := .scene.Objects}}
+                <option value="{{$object.RefName}}">{{$object.Name}}</option>
+                {{ end}}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+          </div>
+          
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+  $(function() {
+    $("#cameraPositionX").parent().parent().hide();
+    $("#cameraPositionY").parent().parent().hide();
+    $("#cameraPositionZ").parent().parent().hide();
+    $("#cameraAlpha").parent().parent().hide();
+    $("#cameraBeta").parent().parent().hide();
+    $("#cameraRedius").parent().parent().hide();
+    $("#cameraTarget").parent().parent().hide();
+  });
+
+  $("#cameraKind").on("change", function(){
+    if($("#cameraKind").val() === "FREE_CAMERA"){
+      $("#cameraPositionX").parent().parent().show();
+      $("#cameraPositionY").parent().parent().show();
+      $("#cameraPositionZ").parent().parent().show();
+      $("#cameraAlpha").parent().parent().hide();
+      $("#cameraBeta").parent().parent().hide();
+      $("#cameraRedius").parent().parent().hide();
+      $("#cameraTarget").parent().parent().show();  
+    }
+    if($("#cameraKind").val() === "ARC_CAMERA"){
+      $("#cameraPositionX").parent().parent().hide();
+      $("#cameraPositionY").parent().parent().hide();
+      $("#cameraPositionZ").parent().parent().hide();
+      $("#cameraAlpha").parent().parent().show();
+      $("#cameraBeta").parent().parent().show();
+      $("#cameraRedius").parent().parent().show();
+      $("#cameraTarget").parent().parent().show();  
+    }
+  });
+
+
+</script>

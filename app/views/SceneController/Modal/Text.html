@@ -1,0 +1,77 @@
+{{$sceneRef := .scene.Id.Hex}}
+
+<div class="modal fade" id="textModal" tabindex="-1" role="dialog" aria-labelledby="textModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="textModal">Text</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" action="/admin/scenes/{{$sceneRef}}/texts" method="POST">
+          <div class="form-group">
+            <label for="textName" class="col-md-3 control-label">Name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="textName" name="name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="textContent" class="col-sm-3 control-label">Content</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="textContent" name="content">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="textSize" class="col-sm-3 control-label">Size</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="textSize" name="size">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="textPositionX" class="col-sm-3 control-label">Position X</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="textPositionX" name="x">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="textPositionY" class="col-sm-3 control-label">Position Y</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="textPositionY" name="y">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="textHeight" class="col-sm-3 control-label">Height</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="textHeight" name="height">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="textWidth" class="col-sm-3 control-label">Width</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="textWidth" name="width">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="textColor" class="col-md-3 control-label">Color</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" id="textColor" name="color">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="textStroke" class="col-md-3 control-label">Stroke Color</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" id="textStroke" name="stroke">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+              <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+          </div>
+          
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Labyrinth</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/css/powerange.min.css">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto' type='text/css'>
+    <link rel="stylesheet" href="/public/css/pnotify.custom.min.css">
+    <link rel="stylesheet" href="/public/css/labyrinth.css">
+    
+    <link rel="shortcut icon" type="image/png" href="/public/img/favicon.png">
+    
+    <script src="/public/js/jquery-2.1.1.min.js"></script>
+    <script src="/public/js/bootstrap.min.js"></script>
+    <script src="/public/js/babylon.1.14.js"></script>
+    <script src="/public/js/powerange.min.js"></script>
+    <script src="/public/js/jscolor/jscolor.js"></script>
+    <script src="/public/js/pnotify.custom.min.js"></script>
+    <script src="/public/js/labyrinth.js"></script>
+
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+
+            <div class="row">
+              <div class="col-md-10">
+                <header>
+                  <img src="/public/img/labyrinth.png" alt="Labyrinth" />
+                </header>
+              </div>
+              <div class="col-md-2 log-out">
+                <a href="/logout">
+                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                  Log Out
+                </a>
+              </div>
+            </div>
+
+            <nav>
+              <ul class="nav nav-tabs" role="tablist">
+                <li><a href="/admin/scenes">Scene</a></li>
+                <li><a href="/admin/objects">Object</a></li>
+                <li><a href="/admin/materials">Material</a></li>
+                <li><a href="/admin/resources">Resources</a></li>
+              </ul>
+            </nav>
+
+            <br />
+        </div>
+
+        <div class="col-md-10 col-md-offset-1">
+          
+          <div id="message"></div>
+
+          {{if .flash.error}}
+            <div class="alert alert-danger" role="alert">{{.flash.error}}</div>
+          {{end}}
+
+          {{if .errors}}
+            <div class="alert alert-danger" role="alert">
+              <ul>
+              {{range .errors}}
+                <li> {{.Message}}</li>
+              {{end}}
+              </ul>
+            </div>
+          {{end}}
+
+
+

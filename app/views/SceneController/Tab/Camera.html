@@ -1,0 +1,91 @@
+{{$sceneRef := .scene.Id.Hex}}
+
+<div role="tabpanel" class="tab-pane fade in" id="cameraPanel">
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-right menubar">
+        <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#cameraModal">Add Camera</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    {{range $index, $element := .scene.Cameras }}
+      <div class="col-md-4">
+          <div class="panel panel-default panel-item">
+           <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-9">
+                <p class="form-control-static object-item-name">{{$element.Name}}</p>
+              </div>
+              {{if ne $element.Name "default"}}
+              <div class="col-md-1 text-right">
+                <a class="btn btn-danger btn-sm btn-camera-delete" data-scene="{{$sceneRef}}" data-camera="{{$element.RefName}}" role="button">Delete</a>
+              </div>
+              {{end}}
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <form class="form-horizontal" role="form" action="/admin/scenes/{{$sceneRef}}/elements/camera/{{$index}}" method="POST">
+
+              {{if eq $element.Kind "FREE_CAMERA"}}
+              <div class="form-group form-group-sm">
+                <label class="col-sm-4 control-label">x</label>
+                <div class="col-sm-8">
+                  <input class="form-control" type="text" name="x" value="{{$element.Properties.x}}">
+                </div>
+              </div>
+
+              <div class="form-group form-group-sm">
+                <label class="col-sm-4 control-label">y</label>
+                <div class="col-sm-8">
+                  <input class="form-control" type="text" name="y" value="{{$element.Properties.y}}">
+                </div>
+              </div>
+
+              <div class="form-group form-group-sm">
+                <label class="col-sm-4 control-label">z</label>
+                <div class="col-sm-8">
+                  <input class="form-control" type="text" name="z" value="{{$element.Properties.z}}">
+                </div>
+              </div>
+              {{end}}
+
+              {{if eq $element.Kind "ARC_CAMERA"}}
+              <div class="form-group form-group-sm">
+                <label class="col-sm-4 control-label">alpha</label>
+                <div class="col-sm-8">
+                  <input class="form-control" type="text" name="alpha" value="{{$element.Properties.alpha}}">
+                </div>
+              </div>
+
+              <div class="form-group form-group-sm">
+                <label class="col-sm-4 control-label">beta</label>
+                <div class="col-sm-8">
+                  <input class="form-control" type="text" name="beta" value="{{$element.Properties.beta}}">
+                </div>
+              </div>
+
+              <div class="form-group form-group-sm">
+                <label class="col-sm-4 control-label">redius</label>
+                <div class="col-sm-8">
+                  <input class="form-control" type="text" name="redius" value="{{$element.Properties.redius}}">
+                </div>
+              </div>
+              {{end}}
+
+              <div class="form-group form-group-sm">
+                <div class="col-sm-8 col-sm-offset-4">
+                  <button type="submit" class="btn btn-default btn-sm">Update</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    {{end}}
+  </div>
+</div>
